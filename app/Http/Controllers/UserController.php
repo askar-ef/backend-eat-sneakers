@@ -7,6 +7,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 
@@ -45,6 +46,43 @@ class UserController extends Controller
                 'message' => 'Something went wrong',
                 'error' => $error
             ], 'Auth Failed', 500);
+        }
+    }
+
+    public function login(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'email|required',
+                'password' => 'required'
+            ]);
+
+            $cridentials = request(['email', 'password']);
+
+            if (!Auth::attempt($cridentials)) {
+                return ResponseFormatter::error([
+                    'message' => 'Unauthorized'
+                ], 'Auth Failed', 500);
+            }
+
+            $user = User::where('email', $request->email)->first();
+
+
+            if (!Hash::check($request->password, $user->password, [])) {
+                throw new \Exception('Invalid Cridentials');
+            }
+
+            $tokenResult = $user->createToken('authToken')->plainTextToken;
+            return ResponseFormatter::success([
+                'access_token' => $tokenResult,
+                'token_type' => 'Bearer',
+                'user' => $user
+            ], 'Authenticated');
+        } catch (Exception $error) {
+            return ResponseFormatter::error([
+                'message' => 'Something went wrong',
+                'error' => $error
+            ], 'Authenticated Failed', 500);
         }
     }
 }
