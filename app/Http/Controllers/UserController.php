@@ -12,6 +12,7 @@ use Laravel\Fortify\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 
 
+
 class UserController extends Controller
 {
     public function register(Request $request)
@@ -42,7 +43,7 @@ class UserController extends Controller
                 'user' => $user
             ], 'User Registered');
         } catch (Exception $error) {
-            return ResponseFormatter::error([,
+            return ResponseFormatter::error([
                 'message' => 'Something went wrong',
                 'error' => $error
             ], 'Auth Failed', 500);
@@ -61,7 +62,7 @@ class UserController extends Controller
 
             if (!Auth::attempt($cridentials)) {
                 return ResponseFormatter::error([
-                    'message' => 'Unauthorized'
+                    'message' => 'Invalid Cridentials'
                 ], 'Auth Failed', 500);
             }
 
