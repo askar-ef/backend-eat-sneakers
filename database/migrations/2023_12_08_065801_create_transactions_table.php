@@ -9,6 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+
+    // askar
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {

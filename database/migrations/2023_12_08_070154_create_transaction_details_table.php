@@ -9,13 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+
+    // askar
     public function up(): void
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('users_id');
             $table->bigInteger('products_id');
-            $table->bigInteger('transactions_id');
+            $table->bigInteger('transaction_id');
             $table->bigInteger('quantity');
             $table->timestamps();
         });

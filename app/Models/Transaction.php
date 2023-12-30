@@ -1,5 +1,6 @@
 <?php
 
+// askar
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'users_id',
-        'addreess',
+        'address',
         'total_price',
         'shipping_price',
         'status'

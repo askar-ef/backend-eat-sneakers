@@ -49,10 +49,13 @@ class TransactionController extends Controller
     {
         $request->validate([
             'items' => 'required|array',
-            'items.*.id' => 'exists:production,id',
+            // 'items.*.id' => 'exists:production,id',
+            'items.*.id' => 'exists:products,id',
             'total_price' => 'required',
             'shipping_price' => 'required',
-            'status' => 'required|PENDING,SUCCESS,CANCELLED,FAILED,SHIPPING,SHIPPED'
+            // 'status' => 'required|PENDING,SUCCESS,CANCELLED,FAILED,SHIPPING,SHIPPED'
+            'status' => 'required|in:PENDING,SUCCESS,CANCELLED,FAILED,SHIPPING,SHIPPED'
+
         ]);
 
         $transaction = Transaction::create([
@@ -71,6 +74,7 @@ class TransactionController extends Controller
                 'quantity' => $product['quantity']
             ]);
         }
-        return ResponseFormatter::success($transaction->load('items.product', 'Transaksi Berhasil'));
+        // return ResponseFormatter::success($transaction->load('items.product', 'Transaksi Berhasil'));
+        return ResponseFormatter::success($transaction->load('items.product'), 'Transaksi Berhasil');
     }
 }
